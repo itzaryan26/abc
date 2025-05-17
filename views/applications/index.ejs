@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <div class="max-w-6xl mx-auto">
+        <h2 class="text-2xl font-bold mb-6">
+            <%= locals.user.role === 'employer' ? 'Job Applications' : 'My Applications' %>
+        </h2>
+        
+        <div class="grid gap-6">
+            <% applications.forEach(application => { %>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-xl font-semibold"><%= application.job.title %></h3>
+                            <p class="text-gray-600"><%= application.job.company %></p>
+                            <% if (locals.user.role === 'employer') { %>
+                                <p class="text-gray-500">Applicant: <%= application.applicant.email %></p>
+                            <% } %>
+                            <p class="text-gray-500 mt-2">Status: <%= application.status %></p>
+                            <p class="text-gray-500">Applied: <%= new Date(application.createdAt).toLocaleDateString() %></p>
+                        </div>
+                        <div>
+                            <a href="/uploads/<%= application.resume %>" target="_blank" class="bg-blue-100 text-blue-600 px-4 py-2 rounded-md hover:bg-blue-200">View Resume</a>
+                        </div>
+                    </div>
+                    <% if (application.coverLetter) { %>
+                        <div class="mt-4">
+                            <h4 class="font-semibold">Cover Letter:</h4>
+                            <p class="text-gray-700 whitespace-pre-line"><%= application.coverLetter %></p>
+                        </div>
+                    <% } %>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+</body>
+</html>

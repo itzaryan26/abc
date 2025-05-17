@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <div class="max-w-6xl mx-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold">Available Jobs</h2>
+            <% if (locals.user && user.role === 'employer') { %>
+                <a href="/jobs/new" class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700">Post New Job</a>
+            <% } %>
+        </div>
+        
+        <div class="mb-6">
+            <form action="/jobs" method="GET" class="flex gap-4">
+                <input type="text" name="search" placeholder="Search jobs..." class="flex-1 rounded-md border-gray-300">
+                <select name="type" class="rounded-md border-gray-300">
+                    <option value="">All Types</option>
+                    <option value="Full-time">Full-time</option>
+                    <option value="Part-time">Part-time</option>
+                    <option value="Contract">Contract</option>
+                    <option value="Internship">Internship</option>
+                </select>
+                <input type="text" name="location" placeholder="Location" class="rounded-md border-gray-300">
+                <button type="submit" class="bg-gray-100 px-4 py-2 rounded-md hover:bg-gray-200">Search</button>
+            </form>
+        </div>
+
+        <div class="grid gap-6">
+            <% jobs.forEach(job => { %>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-xl font-semibold"><%= job.title %></h3>
+                            <p class="text-gray-600"><%= job.company %> • <%= job.location %></p>
+                            <p class="text-gray-500 mt-2"><%= job.type %></p>
+                        </div>
+                        <a href="/jobs/<%= job._id %>" class="bg-blue-100 text-blue-600 px-4 py-2 rounded-md hover:bg-blue-200">View Details</a>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+</body>
+</html>

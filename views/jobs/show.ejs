@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <div class="flex justify-between items-start mb-6">
+                <div>
+                    <h1 class="text-3xl font-bold"><%= job.title %></h1>
+                    <p class="text-gray-600 mt-2"><%= job.company %> • <%= job.location %></p>
+                    <p class="text-gray-500"><%= job.type %></p>
+                </div>
+                <% if (locals.user) { %>
+                    <% if (user.role === 'employer' && job.employer.toString() === user._id.toString()) { %>
+                        <div class="flex gap-2">
+                            <a href="/jobs/<%= job._id %>/edit" class="bg-blue-100 text-blue-600 px-4 py-2 rounded-md hover:bg-blue-200">Edit</a>
+                            <form action="/jobs/<%= job._id %>?_method=DELETE" method="POST" class="inline">
+                                <button type="submit" class="bg-red-100 text-red-600 px-4 py-2 rounded-md hover:bg-red-200">Delete</button>
+                            </form>
+                        </div>
+                    <% } else if (user.role === 'jobseeker') { %>
+                        <form action="/jobs/<%= job._id %>/apply" method="POST" enctype="multipart/form-data">
+                            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Apply Now</button>
+                        </form>
+                    <% } %>
+                <% } %>
+            </div>
+
+            <div class="prose max-w-none">
+                <h3 class="text-xl font-semibold mb-2">Description</h3>
+                <p class="whitespace-pre-line"><%= job.description %></p>
+
+                <% if (job.requirements && job.requirements.length > 0) { %>
+                    <h3 class="text-xl font-semibold mt-6 mb-2">Requirements</h3>
+                    <ul class="list-disc pl-5">
+                        <% job.requirements.forEach(req => { %>
+                            <li><%= req %></li>
+                        <% }) %>
+                    </ul>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
